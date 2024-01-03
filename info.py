@@ -105,14 +105,14 @@ def classify2(text):
 def classify_demo(text):
     words = set(word for word in negate_sequence(text) if word in pos or word in neg)
     if (len(words) == 0): 
-        print "No features to compare on"
+        print ("No features to compare on")
         return True
 
     pprob, nprob = 0, 0
     for word in words:
         pp = log((pos[word] + 1) / (2 * totals[0]))
         np = log((neg[word] + 1) / (2 * totals[1]))
-        print "%15s %.9f %.9f" % (word, exp(pp), exp(np))
+        print ("%15s %.9f %.9f") % (word, exp(pp), exp(np))
         pprob += pp
         nprob += np
 
@@ -170,7 +170,7 @@ def feature_selection_trials():
         return
 
     words = list(set(pos.keys() + neg.keys()))
-    print "Total no of features:", len(words)
+    print ("Total no of features:"), len(words)
     words.sort(key=lambda w: -MI(w))
     num_features, accuracy = [], []
     bestk = 0
@@ -199,7 +199,7 @@ def feature_selection_trials():
         accuracy.append(correct / size)
         if (correct / size) > best_accuracy:
             bestk = k
-        print k+step, correct / size
+        print (k+step, correct / size)
 
     features = set(words[:bestk])
     cPickle.dump(get_relevant_features(), open(FDATA_FILE, 'w'))
@@ -218,11 +218,8 @@ def test_pang_lee():
     for fname in os.listdir("txt_sentoken/neg"):
         correct += int(classify2(open("txt_sentoken/neg/" + fname).read()) == False)
         total += 1
-    print "accuracy: %f" % (correct / total)
+    print ("accuracy: %f") % (correct / total)
 
 if __name__ == '__main__':
     train()
     feature_selection_trials()
-    # test_pang_lee()
-    # classify_demo(open("pos_example").read())
-    # classify_demo(open("neg_example").read())
